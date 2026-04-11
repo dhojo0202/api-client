@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク APIクライアント</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+        h1 { font-size: 1.4rem; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 8px 12px; border-bottom: 1px solid #eee; }
+        .completed { text-decoration: line-through; color: #aaa; }
+        #status { color: green; margin-top: 8px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <h1>タスク一覧（APIクライアント）</h1>
+
+    <button onclick="loadTasks()">一覧を取得</button>
+    <p id="status"></p>
+    <ul id="task-list"></ul>
+
+    <script>
+        // APIからタスク一覧を取得して表示する
+        async function loadTasks() {
+            document.getElementById('status').textContent = '取得中...';
+
+            // ① APIにリクエストを送る
+            const response = await fetch('http://localhost:8080/api/tasks');
+
+            // ② レスポンスをJSONに変換する
+            const tasks = await response.json();
+
+            // ③ 画面に表示する
+            const list = document.getElementById('task-list');
+            list.innerHTML = '';
+
+            if (tasks.length === 0) {
+                list.innerHTML = '<li>タスクがありません</li>';
+            } else {
+                tasks.forEach(task => {
+                    const li = document.createElement('li');
+                    li.textContent = task.title;
+                    if (task.completed) {
+                        li.classList.add('completed');
+                    }
+                    list.appendChild(li);
+                });
+            }
+
+            document.getElementById('status').textContent = `${tasks.length}件取得しました`;
+        }
+    </script>
+</body>
+</html>

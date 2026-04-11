@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>APIクライアント</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <h1>タスク一覧（APIクライアント / port:8081）</h1>
+        <p class="description">daily-dashboard（port:8080）のAPIからデータを取得しています</p>
+
+        <ul class="task-list">
+            <li th:each="task : ${tasks}"
+                th:class="${task['completed']} ? 'task-item completed' : 'task-item'">
+                <span th:text="${task['title']}"></span>
+                <span class="due" th:if="${task['dueDate'] != null}" th:text="${'期日: ' + task['dueDate']}"></span>
+            </li>
+            <li th:if="${#lists.isEmpty(tasks)}" class="empty">タスクがありません</li>
+        </ul>
+    </div>
+</body>
+</html>
