@@ -7,14 +7,38 @@
 </head>
 <body>
     <div class="container">
-        <h1>タスク一覧（APIクライアント / port:8081）</h1>
-        <p class="description">daily-dashboard（port:8080）のAPIからデータを取得しています</p>
+        <h1>タスク管理（APIクライアント / port:8081）</h1>
+        <p class="description">daily-dashboard（port:8080）のAPIと通信しています</p>
 
+        <!-- タスク追加フォーム -->
+        <form th:action="@{/tasks}" method="post" class="add-form">
+            <input type="text" name="title" placeholder="タスクを入力" required>
+            <input type="date" name="dueDate">
+            <button type="submit">追加</button>
+        </form>
+
+        <!-- タスク一覧 -->
         <ul class="task-list">
             <li th:each="task : ${tasks}"
                 th:class="${task['completed']} ? 'task-item completed' : 'task-item'">
-                <span th:text="${task['title']}"></span>
-                <span class="due" th:if="${task['dueDate'] != null}" th:text="${'期日: ' + task['dueDate']}"></span>
+
+                <div class="task-info">
+                    <span class="task-title" th:text="${task['title']}"></span>
+                    <span class="due" th:if="${task['dueDate'] != null}"
+                          th:text="${'期日: ' + task['dueDate']}"></span>
+                </div>
+
+                <div class="task-actions">
+                    <!-- 完了切り替え -->
+                    <form th:action="@{/tasks/{id}/complete(id=${task['id']})}" method="post">
+                        <button type="submit" class="btn-complete"
+                                th:text="${task['completed']} ? '戻す' : '完了'"></button>
+                    </form>
+                    <!-- 削除 -->
+                    <form th:action="@{/tasks/{id}/delete(id=${task['id']})}" method="post">
+                        <button type="submit" class="btn-delete">削除</button>
+                    </form>
+                </div>
             </li>
             <li th:if="${#lists.isEmpty(tasks)}" class="empty">タスクがありません</li>
         </ul>
