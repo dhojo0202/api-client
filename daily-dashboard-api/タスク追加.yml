@@ -6,6 +6,17 @@ info:
 http:
   method: POST
   url: http://localhost:8080/api/tasks
+  headers:
+    - name: Authorization
+      value: Bearer {{authToken}}
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+        "title": "Brunoからのタスク001",
+        "dueDate": "2026-04-30"
+      }
   auth: inherit
 
 settings:

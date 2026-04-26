@@ -6,7 +6,21 @@ info:
 http:
   method: POST
   url: http://localhost:8080/auth/login
+  body:
+    type: json
+    data: |-
+      {
+        "username": "admin",
+        "password": "password"
+      }
   auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        // レスポンスからトークンを取り出してコレクション変数に保存
+        bru.setEnvVar("authToken", res.body.token);
 
 settings:
   encodeUrl: true

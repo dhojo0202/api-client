@@ -6,6 +6,9 @@ info:
 http:
   method: GET
   url: http://localhost:8080/api/tasks
+  headers:
+    - name: Authorization
+      value: Bearer {{authToken}}
   auth: inherit
 
 settings:
