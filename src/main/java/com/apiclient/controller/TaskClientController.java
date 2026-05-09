@@ -31,7 +31,7 @@ public class TaskClientController {
     // タスク一覧表示
     @GetMapping("/")
     public String index(Model model) {
-        List tasks = restTemplate.getForObject(apiUrl + "/api/tasks", List.class);
+        List<?> tasks = restTemplate.getForObject(apiUrl + "/api/tasks", List.class);
         model.addAttribute("tasks", tasks);
         return "index";
     }
